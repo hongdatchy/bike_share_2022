@@ -21,8 +21,8 @@ public class UserController {
     @Autowired
     ContractRepoJpa contractRepoJpa;
 
-    @Autowired
-    MqttService mqttService;
+//    @Autowired
+//    MqttService mqttService;
 
     @Autowired
     UserRepoJpa userRepoJpa;
@@ -36,7 +36,7 @@ public class UserController {
                 .paymentMethod(rentBikeRequest.getPaymentMethod())
                 .userId(userId)
                 .build();
-        mqttService.publish(rentBikeRequest.getBikeId(), "mo khoa");
+//        mqttService.publish(rentBikeRequest.getBikeId(), "mo khoa");
         return ResponseEntity.ok(MyResponse.success(contractRepoJpa.save(contract)));
     }
 
