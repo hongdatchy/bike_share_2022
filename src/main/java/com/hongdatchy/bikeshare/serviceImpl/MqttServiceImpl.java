@@ -18,18 +18,18 @@ public class MqttServiceImpl implements MqttService {
 
     @PostConstruct
     public void innit(){
-//        try {
-//            MemoryPersistence persistence = new MemoryPersistence();
-//            client = new MqttClient(broker, clientId, persistence);
-//            MqttConnectOptions connOpts = new MqttConnectOptions();
-//            connOpts.setUserName("sanslab");
-//            connOpts.setPassword("1".toCharArray());
-//            // retain session
-//            connOpts.setCleanSession(true);
-//            client.connect(connOpts);
-//        }catch (MqttException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            MemoryPersistence persistence = new MemoryPersistence();
+            client = new MqttClient(broker, clientId, persistence);
+            MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setUserName("sanslab");
+            connOpts.setPassword("1".toCharArray());
+            // retain session
+            connOpts.setCleanSession(true);
+            client.connect(connOpts);
+        }catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

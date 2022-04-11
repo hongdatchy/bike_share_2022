@@ -31,17 +31,14 @@ public class BikeShareApplication implements CommandLineRunner {
                 .paths(PathSelectors.ant("/**")).build();
     }
 
-//    @Autowired
-//    MqttService  mqttService;
+    @Autowired
+    MqttService  mqttService;
 
     @Override
     public void run(String... args) {
-        System.setProperty("java.net.preferIPv4Stack" , "true");
-//        mqttService.subscribe(2);
-//        mqttService.subscribeAll();
-//
-//        mqttService.publish(2, "dong khoa");
 
+        mqttService.subscribeAll();
+        
     }
 
 }
