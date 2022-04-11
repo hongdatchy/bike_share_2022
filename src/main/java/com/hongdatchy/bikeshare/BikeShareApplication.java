@@ -36,7 +36,7 @@ public class BikeShareApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
+        System.setProperty("java.net.preferIPv4Stack" , "true");
 //        mqttService.subscribe(2);
 //        mqttService.subscribeAll();
 //
