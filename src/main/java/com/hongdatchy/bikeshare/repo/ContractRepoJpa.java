@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface ContractRepoJpa extends JpaRepository<Contract, Integer> {
     List<Contract> findByBikeId(int bikeId);
+
+    List<Contract> findByUserId(int userId);
 }

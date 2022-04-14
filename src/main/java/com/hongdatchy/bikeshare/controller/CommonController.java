@@ -58,7 +58,7 @@ public class CommonController {
     }
 
     @PostMapping("api/common/active")
-    public ResponseEntity<Object> register(@RequestBody String code) throws MessagingException {
+    public ResponseEntity<Object> register(@RequestBody String code) {
         return userService.activeAccount(code) ? ResponseEntity.ok(MyResponse.success("active success")) :
                 ResponseEntity.ok(MyResponse.fail("active fail"));
     }
