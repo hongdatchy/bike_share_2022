@@ -15,13 +15,13 @@ import java.util.List;
 @Service
 public class AdminServiceImpl implements AdminService {
 
-
     @Autowired
     AdminRepoJpa adminRepoJpa;
+
     @Override
     public Admin login(LoginForm loginForm) {
         Admin admin = Admin.builder()
-                .email(loginForm.getUsername())
+                .email(loginForm.getEmail())
                 .password(SHA256Service.getSHA256(loginForm.getPassword()))
                 .build();
         Example<Admin> adminExample = Example.of(admin, ExampleMatcher.matchingAll());

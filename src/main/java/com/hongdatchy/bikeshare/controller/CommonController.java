@@ -3,6 +3,7 @@ package com.hongdatchy.bikeshare.controller;
 import com.hongdatchy.bikeshare.entities.model.Admin;
 import com.hongdatchy.bikeshare.entities.model.User;
 import com.hongdatchy.bikeshare.entities.request.LoginForm;
+import com.hongdatchy.bikeshare.entities.request.RegisterForm;
 import com.hongdatchy.bikeshare.entities.response.LoginResponse;
 import com.hongdatchy.bikeshare.entities.response.MyResponse;
 import com.hongdatchy.bikeshare.security.JWTService;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.mail.MessagingException;
 
 @RestController
 public class CommonController {
@@ -28,7 +31,6 @@ public class CommonController {
 
     @PostMapping("api/common/login")
     public ResponseEntity<Object> login(@RequestBody LoginForm loginForm){
-        System.out.println(loginForm);
         User user = userService.login(loginForm);
         if(user != null){
             return ResponseEntity.ok(
@@ -42,11 +44,22 @@ public class CommonController {
                         : MyResponse.fail("username or password is incorrect")
             );
         }
-
     }
 
-//    @GetMapping("api/public/user/book")
-//    public ResponseEntity<Object> test() {
-//        return ResponseEntity.ok(MyResponse.success("test"));
-//    }
+    @PostMapping("api/common/register")
+    public ResponseEntity<Object> register(@RequestBody RegisterForm registerForm) throws MessagingException {
+        if(!registerForm.getPassword().equals(registerForm.getRePassword())){
+            return ResponseEntity.ok(MyResponse.fail("password and rePassword is not equal"));
+        }
+        boolean isSuccess = userService.register(registerForm);
+        return isSuccess ?
+                ResponseEntity.ok(MyResponse.success("please check your email")):
+                ResponseEntity.ok(MyResponse.fail("email was already used or invalidate"));
+    }
+
+    @PostMapping("api/common/active")
+    public ResponseEntity<Object> register(@RequestBody String code) throws MessagingException {
+        return userService.activeAccount(code) ? ResponseEntity.ok(MyResponse.success("active success")) :
+                ResponseEntity.ok(MyResponse.fail("active fail"));
+    }
 }

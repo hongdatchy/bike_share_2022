@@ -1,5 +1,6 @@
 package com.hongdatchy.bikeshare.entities.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,7 @@ public class Contract  {
     private Integer bikeId;
 
     @Column(name = "create_datetime", nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
     private Timestamp createDatetime;
 
     @Column(name = "payment_method", nullable = false)

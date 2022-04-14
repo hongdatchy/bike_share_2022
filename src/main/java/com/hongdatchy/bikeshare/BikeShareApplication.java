@@ -1,11 +1,13 @@
+/**
+ * Copyright(C) 2022 SanLab VSet Hust
+ *
+ * BikeShareApplication.java, April 2022 hongdatchy
+ */
 package com.hongdatchy.bikeshare;
 
 import com.hongdatchy.bikeshare.service.MqttService;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import com.hongdatchy.bikeshare.service.PathService;
+import com.hongdatchy.bikeshare.service.SendEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,6 +18,8 @@ import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableSwagger2
@@ -30,15 +34,27 @@ public class BikeShareApplication implements CommandLineRunner {
         return new Docket(DocumentationType.SWAGGER_2).select().apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/**")).build();
     }
+    @Autowired
+    com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     @Autowired
     MqttService  mqttService;
 
+    @Autowired
+    PathService pathService;
+
+    @Autowired
+    SendEmailService sendEmailService;
+
     @Override
     public void run(String... args) {
+//        set timezone cho backend
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
+//        set timezone cho controller
+        objectMapper.setTimeZone(TimeZone.getDefault());
 
         mqttService.subscribeAll();
-        
+
     }
 
 }

@@ -26,4 +26,6 @@ public class Device  {
     @Column(name = "latitude", nullable = false)
     private String latitude;
 
+    @Column(name = "battery", nullable = false)
+    private Integer battery;
 }

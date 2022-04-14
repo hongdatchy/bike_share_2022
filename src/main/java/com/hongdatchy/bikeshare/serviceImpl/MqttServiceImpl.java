@@ -1,11 +1,10 @@
 package com.hongdatchy.bikeshare.serviceImpl;
 
 import com.hongdatchy.bikeshare.service.MqttService;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +14,9 @@ public class MqttServiceImpl implements MqttService {
     String broker = "tcp://155.248.164.224:1883";
     String clientId = "hongdatchy";
     MqttClient client;
+
+    @Autowired
+    MqttCallback mqttCallback;
 
     @PostConstruct
     public void innit(){
@@ -54,7 +56,7 @@ public class MqttServiceImpl implements MqttService {
 
         try {
             // set callback
-            client.setCallback(new MqttHandelArriveMess());
+            client.setCallback(mqttCallback);
             // Subscribe
             client.subscribe(subTopic);
         } catch (MqttException e) {
@@ -68,7 +70,7 @@ public class MqttServiceImpl implements MqttService {
 
         try {
             // set callback
-            client.setCallback(new MqttHandelArriveMess());
+            client.setCallback(mqttCallback);
             // Subscribe
             client.subscribe(subTopic);
         } catch (MqttException e) {
