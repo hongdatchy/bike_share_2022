@@ -1,4 +1,3 @@
-use bike_share;
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: bike_share
@@ -114,7 +113,7 @@ CREATE TABLE `contract` (
   KEY `contract_ibfk_2` (`bike_id`),
   CONSTRAINT `contract_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `contract_ibfk_2` FOREIGN KEY (`bike_id`) REFERENCES `bike` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -123,7 +122,7 @@ CREATE TABLE `contract` (
 
 LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-INSERT INTO `contract` VALUES (1,1,1,'2022-04-08 01:32:50','string'),(2,1,1,'2022-04-08 01:33:12','string');
+INSERT INTO `contract` VALUES (1,1,1,'2022-04-08 01:32:50','string'),(2,1,1,'2022-04-08 01:33:12','string'),(3,1,1,'2022-04-13 22:41:17','string');
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,6 +139,7 @@ CREATE TABLE `device` (
   `status_lock` double DEFAULT NULL,
   `longitude` varchar(45) NOT NULL,
   `latitude` varchar(45) NOT NULL,
+  `battery` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `device_ibfk_1` (`bike_id`),
@@ -174,7 +174,7 @@ CREATE TABLE `path` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `path_ibfk_1` (`contract_id`),
   CONSTRAINT `path_ibfk_1` FOREIGN KEY (`contract_id`) REFERENCES `contract` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,6 +183,7 @@ CREATE TABLE `path` (
 
 LOCK TABLES `path` WRITE;
 /*!40000 ALTER TABLE `path` DISABLE KEYS */;
+INSERT INTO `path` VALUES (1,3,222.38985328911747,'2022-04-13 22:41:17','2022-04-14 03:42:41','[{\"latitude\":22.123456,\"longitude\":105.6},{\"latitude\":21.123456,\"longitude\":105.6},{\"latitude\":22.123456,\"longitude\":105.6}]');
 /*!40000 ALTER TABLE `path` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -269,6 +270,7 @@ CREATE TABLE `user_not_active` (
   `address` varchar(45) NOT NULL,
   `district` varchar(45) NOT NULL,
   `city` varchar(45) NOT NULL,
+  `code` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -292,4 +294,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-10 16:45:12
+-- Dump completed on 2022-04-14 22:13:32
