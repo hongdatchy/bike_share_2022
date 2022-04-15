@@ -11,7 +11,7 @@ public class RegisterForm {
     private String password;
     private String rePassword;
     private String phone;
-    private Integer id;
+    private int id;
     private String firstname;
     private String lastname;
     private String creditCard;

@@ -20,7 +20,7 @@ public class MqttCallBackImpl implements MqttCallback {
     public void connectionLost(Throwable cause) {
         // After the connection is lost, it usually reconnects here
         System.out.println("disconnect，you can reconnect");
-        System.out.println(cause.toString());
+
     }
 
     /**

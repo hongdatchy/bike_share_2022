@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class RentBikeRequest {
-    Integer bikeId;
+    int bikeId;
     String paymentMethod;
 }

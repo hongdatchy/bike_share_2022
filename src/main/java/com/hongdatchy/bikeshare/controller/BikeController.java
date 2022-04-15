@@ -24,13 +24,13 @@ public class BikeController {
     }
 
     @GetMapping("api/ad/bike")
-    ResponseEntity<Object> findAll(@RequestHeader String token){
+    ResponseEntity<Object> findAll(){
         List<Bike> bikes = bikeRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(bikes));
     }
 
     @DeleteMapping("api/ad/bike/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
+    ResponseEntity<Object> deleteById(@PathVariable int id){
         if(bikeRepoJpa.findById(id).isPresent()){
             bikeRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -38,7 +38,7 @@ public class BikeController {
     }
 
     @PostMapping("api/ad/bike")
-    ResponseEntity<Object> createAndUpdate(@RequestBody Bike bike, @RequestHeader String token){
+    ResponseEntity<Object> createAndUpdate(@RequestBody Bike bike){
         return ResponseEntity.ok(MyResponse.success(bikeRepoJpa.save(bike)));
     }
 }

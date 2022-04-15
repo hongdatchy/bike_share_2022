@@ -15,13 +15,13 @@ public class StationController {
     StationRepoJpa stationRepoJpa;
 
     @GetMapping("api/ad/station")
-    ResponseEntity<Object> findAll(@RequestHeader String token){
+    ResponseEntity<Object> findAll(){
         List<Station> stations = stationRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(stations));
     }
 
     @DeleteMapping("api/ad/station/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
+    ResponseEntity<Object> deleteById(@PathVariable int id){
         if(stationRepoJpa.findById(id).isPresent()){
             stationRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -29,7 +29,7 @@ public class StationController {
     }
 
     @PostMapping("api/ad/station")
-    ResponseEntity<Object> createAndUpdate(@RequestBody Station station, @RequestHeader String token){
+    ResponseEntity<Object> createAndUpdate(@RequestBody Station station){
         return ResponseEntity.ok(MyResponse.success(stationRepoJpa.save(station)));
     }
 
