@@ -4,7 +4,6 @@ import com.hongdatchy.bikeshare.service.MqttService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -12,7 +11,7 @@ import javax.annotation.PostConstruct;
 @Service
 public class MqttServiceImpl implements MqttService {
     String broker = "tcp://155.248.164.224:1883";
-    String clientId = "hongdatchy";
+    String clientId = MqttAsyncClient.generateClientId();
     MqttClient client;
 
     @Autowired
