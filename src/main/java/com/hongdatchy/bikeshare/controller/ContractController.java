@@ -15,7 +15,7 @@ public class ContractController {
     @Autowired
     ContractRepoJpa contractRepoJpa;
 
-    @GetMapping("api/us/contract")
+    @PostMapping("api/us/contract")
     ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId, @RequestHeader String token){
         List<Contract> contracts = contractRepoJpa.findByUserId(userId);
         return ResponseEntity.ok(MyResponse.success(contracts));

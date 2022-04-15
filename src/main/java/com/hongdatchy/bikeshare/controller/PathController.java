@@ -14,9 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class PathController {
@@ -28,7 +26,7 @@ public class PathController {
     ContractRepoJpa contractRepoJpa;
 
 
-    @GetMapping("api/us/path")
+    @PostMapping("api/us/path")
     ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId, @RequestHeader String token){
         List<Contract> contracts = contractRepoJpa.findByUserId(userId);
         List<Path> paths = new ArrayList<>();
