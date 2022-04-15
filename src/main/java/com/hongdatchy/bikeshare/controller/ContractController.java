@@ -16,19 +16,19 @@ public class ContractController {
     ContractRepoJpa contractRepoJpa;
 
     @GetMapping("api/us/contract")
-    ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId){
+    ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId, @RequestHeader String token){
         List<Contract> contracts = contractRepoJpa.findByUserId(userId);
         return ResponseEntity.ok(MyResponse.success(contracts));
     }
 
     @GetMapping("api/ad/contract")
-    ResponseEntity<Object> findAll(){
+    ResponseEntity<Object> findAll(@RequestHeader String token){
         List<Contract> contracts = contractRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(contracts));
     }
 
     @DeleteMapping("api/ad/contract/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id){
+    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
         if(contractRepoJpa.findById(id).isPresent()){
             contractRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -36,7 +36,7 @@ public class ContractController {
     }
 
     @PostMapping("api/ad/contract")
-    ResponseEntity<Object> createAndUpdate(@RequestBody Contract contract){
+    ResponseEntity<Object> createAndUpdate(@RequestBody Contract contract, @RequestHeader String token){
         return ResponseEntity.ok(MyResponse.success(contractRepoJpa.save(contract)));
     }
 }

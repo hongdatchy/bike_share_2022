@@ -29,7 +29,7 @@ public class PathController {
 
 
     @GetMapping("api/us/path")
-    ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId){
+    ResponseEntity<Object> usFindAll(@RequestAttribute Integer userId, @RequestHeader String token){
         List<Contract> contracts = contractRepoJpa.findByUserId(userId);
         List<Path> paths = new ArrayList<>();
         for (Contract contract : contracts){
@@ -50,13 +50,13 @@ public class PathController {
     }
 
     @GetMapping("api/ad/path")
-    ResponseEntity<Object> findAll(){
+    ResponseEntity<Object> findAll(@RequestHeader String token){
         List<Path> paths = pathRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(paths));
     }
 
     @DeleteMapping("api/ad/path/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id){
+    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
         if(pathRepoJpa.findById(id).isPresent()){
             pathRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -64,7 +64,7 @@ public class PathController {
     }
 
     @PostMapping("api/ad/path")
-    ResponseEntity<Object> createAndUpdate(@RequestBody Path path){
+    ResponseEntity<Object> createAndUpdate(@RequestBody Path path, @RequestHeader String token){
         return ResponseEntity.ok(MyResponse.success(pathRepoJpa.save(path)));
     }
 

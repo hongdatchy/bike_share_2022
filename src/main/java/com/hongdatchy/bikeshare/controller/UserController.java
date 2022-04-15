@@ -33,7 +33,7 @@ public class UserController {
     PathRepoJpa pathRepoJpa;
 
     @PostMapping("api/us/rent-bike")
-    ResponseEntity<Object> rendBike(@RequestBody RentBikeRequest rentBikeRequest, @RequestAttribute Integer userId){
+    ResponseEntity<Object> rendBike(@RequestBody RentBikeRequest rentBikeRequest, @RequestAttribute Integer userId, @RequestHeader String token){
         // fe call api thue xe --> neu thanh cong ( đang hiện tại là thành công 100%)
         // thì đẩy bản tin mqtt thông báo cho thiết bị là hãy mở khoá
         Contract contract = contractRepoJpa.save(Contract.builder()
@@ -56,13 +56,13 @@ public class UserController {
     }
 
     @GetMapping("api/ad/user")
-    ResponseEntity<Object> findAll(){
+    ResponseEntity<Object> findAll(@RequestHeader String token){
         List<User> users = userRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(users));
     }
 
     @DeleteMapping("api/ad/user/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id){
+    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
         if(userRepoJpa.findById(id).isPresent()){
             userRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @PostMapping("api/ad/user")
-    ResponseEntity<Object> createAndUpdate(@RequestBody User user){
+    ResponseEntity<Object> createAndUpdate(@RequestBody User user, @RequestHeader String token){
         return ResponseEntity.ok(MyResponse.success(userRepoJpa.save(user)));
     }
     

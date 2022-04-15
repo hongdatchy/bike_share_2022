@@ -15,13 +15,13 @@ public class DeviceController {
     DeviceRepoJpa deviceRepoJpa;
 
     @GetMapping("api/ad/device")
-    ResponseEntity<Object> findAll(){
+    ResponseEntity<Object> findAll(@RequestHeader String token){
         List<Device> devices = deviceRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(devices));
     }
 
     @DeleteMapping("api/ad/device/{id}")
-    ResponseEntity<Object> deleteById(@PathVariable int id){
+    ResponseEntity<Object> deleteById(@PathVariable int id, @RequestHeader String token){
         if(deviceRepoJpa.findById(id).isPresent()){
             deviceRepoJpa.deleteById(id);
             return ResponseEntity.ok(MyResponse.success(""));
@@ -29,7 +29,7 @@ public class DeviceController {
     }
 
     @PostMapping("api/ad/device")
-    ResponseEntity<Object> createAndUpdate(@RequestBody Device device){
+    ResponseEntity<Object> createAndUpdate(@RequestBody Device device, @RequestHeader String token){
         return ResponseEntity.ok(MyResponse.success(deviceRepoJpa.save(device)));
     }
 }
