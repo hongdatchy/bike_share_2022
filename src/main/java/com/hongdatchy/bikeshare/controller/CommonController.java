@@ -11,9 +11,7 @@ import com.hongdatchy.bikeshare.service.AdminService;
 import com.hongdatchy.bikeshare.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 
@@ -56,8 +54,8 @@ public class CommonController {
                 ResponseEntity.ok(MyResponse.fail("email was already used or invalidate"));
     }
 
-    @PostMapping("api/common/active")
-    public ResponseEntity<Object> register(@RequestBody String code) {
+    @GetMapping("api/common/active/{code}")
+    public ResponseEntity<Object> active(@PathVariable String code) {
         return userService.activeAccount(code) ? ResponseEntity.ok(MyResponse.success("active success")) :
                 ResponseEntity.ok(MyResponse.fail("active fail"));
     }

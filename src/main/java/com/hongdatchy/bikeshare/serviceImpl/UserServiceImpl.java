@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
                 .gender(registerForm.getGender())
                 .id(0)
                 .lastname(registerForm.getLastname())
-                .password(registerForm.getPassword())
+                .password(SHA256Service.getSHA256(registerForm.getPassword()))
                 .phone(registerForm.getPhone())
                 .code(activeCode)
                 .build());
@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
                     .city(users.get(0).getCity())
                     .birthday(users.get(0).getBirthday())
                     .build());
+            userNotActiveJpa.delete(users.get(0));
             return true;
         }
         return false;
