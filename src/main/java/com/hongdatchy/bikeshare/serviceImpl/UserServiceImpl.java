@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if(oldUsers.size() != 0 || oldAdmins.size() != 0) return false;
         String activeCode = getRandomCode();
         boolean b = sendEmailService.sendMailHtml(registerForm.getEmail()
-                , "Active account at Hongdatchy blog"
+                , "Active account at Bike Share system"
                 , activeCode, registerForm);
 
         if(!b) return false;
@@ -101,10 +101,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public String getRandomCode(){
-        String rs="";
+        StringBuilder rs= new StringBuilder();
         for (int i=0; i< 4; i++){
-            rs += String.valueOf((int) (Math.random() * 10));
+            rs.append((int) (Math.random() * 10));
         }
-        return rs + new Date().getTime()/1000;
+        return rs.toString() + new Date().getTime()/1000;
     }
 }

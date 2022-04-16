@@ -1,5 +1,6 @@
 package com.hongdatchy.bikeshare.entities.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class User  {
     @Column(name = "credit_card", nullable = false)
     private String creditCard;
 
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+7")
     @Column(name = "birthday", nullable = false)
     private Date birthday;
 
