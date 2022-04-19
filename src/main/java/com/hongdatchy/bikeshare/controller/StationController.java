@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class StationController {
@@ -18,6 +19,13 @@ public class StationController {
     ResponseEntity<Object> findAll(){
         List<Station> stations = stationRepoJpa.findAll();
         return ResponseEntity.ok(MyResponse.success(stations));
+    }
+
+    @GetMapping("api/common/station/{id}")
+    ResponseEntity<Object> findById(@PathVariable int id){
+        Optional<Station> station = stationRepoJpa.findById(id);
+        return station.isPresent() ? ResponseEntity.ok(MyResponse.success(station.get()))
+                : ResponseEntity.ok(MyResponse.fail("id incorrect"));
     }
 
     @DeleteMapping("api/ad/station/{id}")

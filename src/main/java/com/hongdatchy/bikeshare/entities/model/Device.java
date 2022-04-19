@@ -18,7 +18,7 @@ public class Device  {
     private Integer bikeId;
 
     @Column(name = "status_lock")
-    private Double statusLock;
+    private Boolean statusLock;
 
     @Column(name = "longitude", nullable = false)
     private String longitude;

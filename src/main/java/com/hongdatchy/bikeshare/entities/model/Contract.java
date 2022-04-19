@@ -28,11 +28,15 @@ public class Contract  {
     @Column(name = "bike_id", nullable = false)
     private Integer bikeId;
 
-    @Column(name = "create_datetime", nullable = false)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
-    private Timestamp createDatetime;
-
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
+    @Column(name = "start_time", nullable = false)
+    private Timestamp startTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
+    @Column(name = "end_time")
+    private Timestamp endTime;
 
 }

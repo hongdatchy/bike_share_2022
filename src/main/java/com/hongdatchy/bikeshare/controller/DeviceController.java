@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class DeviceController {
@@ -17,6 +18,19 @@ public class DeviceController {
     @GetMapping("api/ad/device")
     ResponseEntity<Object> findAll(){
         List<Device> devices = deviceRepoJpa.findAll();
+        return ResponseEntity.ok(MyResponse.success(devices));
+    }
+
+    @GetMapping("api/common/device/{id}")
+    ResponseEntity<Object> findById(@PathVariable int id){
+        Optional<Device> device = deviceRepoJpa.findById(id);
+        return device.isPresent() ? ResponseEntity.ok(MyResponse.success(device)) :
+                ResponseEntity.ok(MyResponse.fail("is is incorrect"));
+    }
+
+    @GetMapping("api/common/{bikeId}")
+    ResponseEntity<Object> findByBikeId(@PathVariable int bikeId){
+        List<Device> devices = deviceRepoJpa.findByBikeId(bikeId);
         return ResponseEntity.ok(MyResponse.success(devices));
     }
 

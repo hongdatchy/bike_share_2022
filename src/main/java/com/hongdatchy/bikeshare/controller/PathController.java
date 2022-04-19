@@ -40,7 +40,6 @@ public class PathController {
                 paths.stream().map(path -> PathResponse.builder()
                         .contractId(path.getContractId())
                         .distance(path.getDistance())
-                        .endTime(path.getEndTime())
                         .id(path.getId())
                         .coordinates(new Gson().fromJson(path.getRoutes(), new TypeToken<List<Coordinate>>(){}.getType()))
                         .build())

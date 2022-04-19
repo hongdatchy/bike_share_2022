@@ -5,6 +5,7 @@
 package com.hongdatchy.bikeshare.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.hongdatchy.bikeshare.entities.model.Contract;
 import com.hongdatchy.bikeshare.entities.model.Path;
 
 import java.sql.Timestamp;
@@ -15,5 +16,5 @@ import java.sql.Timestamp;
  * @author hongdatchy
  */
 public interface PathService {
-    Path updatePathFormGPS(int bikeId, String latitude, String longitude, Timestamp timestamp) throws JsonProcessingException;
+    Path updatePathFormGPS(Contract contract, int bikeId, String latitude, String longitude) throws JsonProcessingException;
 }

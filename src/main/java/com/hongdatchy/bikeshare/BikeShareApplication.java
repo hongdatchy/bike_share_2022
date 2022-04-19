@@ -19,6 +19,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -47,13 +51,15 @@ public class BikeShareApplication implements CommandLineRunner {
     SendEmailService sendEmailService;
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws ParseException {
 //        set timezone cho backend
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
 //        set timezone cho controller
         objectMapper.setTimeZone(TimeZone.getDefault());
 
         mqttService.subscribeAll();
+
+
 
     }
 

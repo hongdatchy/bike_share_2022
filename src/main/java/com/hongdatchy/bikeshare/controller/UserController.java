@@ -1,11 +1,13 @@
 package com.hongdatchy.bikeshare.controller;
 
 import com.hongdatchy.bikeshare.entities.model.Contract;
+import com.hongdatchy.bikeshare.entities.model.Device;
 import com.hongdatchy.bikeshare.entities.model.Path;
 import com.hongdatchy.bikeshare.entities.model.User;
 import com.hongdatchy.bikeshare.entities.request.RentBikeRequest;
 import com.hongdatchy.bikeshare.entities.response.MyResponse;
 import com.hongdatchy.bikeshare.repo.ContractRepoJpa;
+import com.hongdatchy.bikeshare.repo.DeviceRepoJpa;
 import com.hongdatchy.bikeshare.repo.PathRepoJpa;
 import com.hongdatchy.bikeshare.repo.UserRepoJpa;
 import com.hongdatchy.bikeshare.service.MqttService;
@@ -32,27 +34,34 @@ public class UserController {
     @Autowired
     PathRepoJpa pathRepoJpa;
 
+    @Autowired
+    DeviceRepoJpa deviceRepoJpa;
+
     @PostMapping("api/us/rent-bike")
     ResponseEntity<Object> rendBike(@RequestBody RentBikeRequest rentBikeRequest, @RequestAttribute Integer userId){
-        // fe call api thue xe --> neu thanh cong ( đang hiện tại là thành công 100%)
-        // thì đẩy bản tin mqtt thông báo cho thiết bị là hãy mở khoá
-        Contract contract = contractRepoJpa.save(Contract.builder()
-                                .bikeId(rentBikeRequest.getBikeId())
-                                .createDatetime(new Timestamp(new Date().getTime()))
-                                .id(0)
-                                .paymentMethod(rentBikeRequest.getPaymentMethod())
-                                .userId(userId)
-                                .build());
-        pathRepoJpa.save(Path.builder()
-                .id(0)
-                .contractId(contract.getId())
-                .distance(0.0)
-                .routes("")
-                .startTime(new Timestamp(new Date().getTime()))
-                .endTime(new Timestamp(new Date().getTime()))
-                .build());
-        mqttService.publish(rentBikeRequest.getBikeId(), "o");
-        return ResponseEntity.ok(MyResponse.success(contract));
+        // kiểm tra xem status device có đang đóng hay không
+        List<Device> devices = deviceRepoJpa.findByBikeId(rentBikeRequest.getBikeId());
+        if(devices.size() == 1 && !devices.get(0).getStatusLock()){
+            // tạo contract mới set time start là thời điểm hiện tại
+            // time end là null, sẽ được cập nhật từ mqtt sau khi tạo contract
+            Contract contract = contractRepoJpa.save(Contract.builder()
+                    .bikeId(rentBikeRequest.getBikeId())
+                    .id(0)
+                    .paymentMethod(rentBikeRequest.getPaymentMethod())
+                    .startTime(new Timestamp(new Date().getTime()))
+                    .userId(userId)
+                    .build());
+
+            // đẩy bản tin mqtt thông báo cho thiết bị là hãy mở khoá
+            mqttService.publish(rentBikeRequest.getBikeId(), "o");
+
+            // thay đổi status của device
+            devices.get(0).setStatusLock(true);
+            deviceRepoJpa.save(devices.get(0));
+            return ResponseEntity.ok(MyResponse.success(contract));
+        }
+        return ResponseEntity.ok(MyResponse.fail("Bike has not device or bike is being rented"));
+
     }
 
     @GetMapping("api/ad/user")

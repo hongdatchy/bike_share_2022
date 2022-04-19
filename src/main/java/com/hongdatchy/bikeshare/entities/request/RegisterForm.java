@@ -21,4 +21,5 @@ public class RegisterForm {
     private String address;
     private String district;
     private String city;
+
 }

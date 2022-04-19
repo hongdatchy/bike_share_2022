@@ -28,14 +28,6 @@ public class Path  {
     @Column(name = "distance")
     private Double distance;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
-    @Column(name = "start_time", nullable = false)
-    private Timestamp startTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "GMT+7")
-    @Column(name = "end_time", nullable = false)
-    private Timestamp endTime;
-
     @Column(name = "routes", nullable = false, columnDefinition = "LONGTEXT")
     private String routes;
 

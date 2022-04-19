@@ -40,34 +40,34 @@ public class PathServiceImpl implements PathService {
      * 2 update path that have contractId equal last contract in list above
      */
     @Override
-    public Path updatePathFormGPS(int bikeId, String mLatitude, String mLongitude, Timestamp timestamp) {
-        double latitude, longitude;
-        latitude = Double.parseDouble(mLatitude);
-        longitude = Double.parseDouble(mLongitude);
-        List<Contract> contracts = contractRepoJpa.findByBikeId(bikeId);
-        if(contracts.size() > 0){
-            List<Path> paths = pathRepoJpa.findByContractId(contracts.get(contracts.size()-1).getId());
-            if(paths.size()==1){
-                List<Coordinate> coordinates;
-                if(paths.get(0).getRoutes().equals("")){
-                    coordinates = new ArrayList<>();
-                }else{
-                    coordinates = new Gson().fromJson(paths.get(0).getRoutes(), new TypeToken<List<Coordinate>>(){}.getType());
-                    double latPre = coordinates.get(coordinates.size()-1).getLatitude();
-                    double longPre = coordinates.get(coordinates.size()-1).getLongitude();
-                    double addDistance = calculateDistance(latPre , longPre , latitude , longitude);
-                    paths.get(0).setDistance(paths.get(0).getDistance() + addDistance);
-                }
-                paths.get(0).setEndTime(timestamp);
-                coordinates.add(new Coordinate(latitude, longitude));
-                paths.get(0).setRoutes(new Gson().toJson(coordinates));
-                return pathRepoJpa.save(paths.get(0));
-            }else {
-                return null;
-            }
+    public Path updatePathFormGPS(Contract contract, int bikeId, String mLatitude, String mLongitude) {
+
+        double latitude = Double.parseDouble(mLatitude);
+        double longitude = Double.parseDouble(mLongitude);
+
+        List<Path> paths = pathRepoJpa.findByContractId(contract.getId());
+        if (paths.size()==0) {
+            List<Coordinate> coordinates = new ArrayList<>();
+            coordinates.add(new Coordinate(latitude, longitude));
+            return pathRepoJpa.save(Path.builder()
+                    .id(0)
+                    .contractId(contract.getId())
+                    .distance(0.0)
+                    .routes(new Gson().toJson(coordinates))
+                    .build());
+        } else if(paths.size()==1){
+            List<Coordinate> coordinates = new Gson().fromJson(paths.get(0).getRoutes(), new TypeToken<List<Coordinate>>(){}.getType());
+            double latPre = coordinates.get(coordinates.size()-1).getLatitude();
+            double longPre = coordinates.get(coordinates.size()-1).getLongitude();
+            double addDistance = calculateDistance(latPre , longPre , latitude , longitude);
+            paths.get(0).setDistance(paths.get(0).getDistance() + addDistance);
+            coordinates.add(new Coordinate(latitude, longitude));
+            paths.get(0).setRoutes(new Gson().toJson(coordinates));
+            return pathRepoJpa.save(paths.get(0));
         }else {
             return null;
         }
+
     }
 
     /**
