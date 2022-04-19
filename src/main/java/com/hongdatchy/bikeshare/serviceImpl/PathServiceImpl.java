@@ -40,10 +40,7 @@ public class PathServiceImpl implements PathService {
      * 2 update path that have contractId equal last contract in list above
      */
     @Override
-    public Path updatePathFormGPS(Contract contract, int bikeId, String mLatitude, String mLongitude) {
-
-        double latitude = Double.parseDouble(mLatitude);
-        double longitude = Double.parseDouble(mLongitude);
+    public Path updatePathFormGPS(Contract contract, int bikeId, double latitude, double longitude) {
 
         List<Path> paths = pathRepoJpa.findByContractId(contract.getId());
         if (paths.size()==0) {

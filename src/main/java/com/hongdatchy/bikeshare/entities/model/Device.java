@@ -21,10 +21,10 @@ public class Device  {
     private Boolean statusLock;
 
     @Column(name = "longitude", nullable = false)
-    private String longitude;
+    private Double longitude;
 
     @Column(name = "latitude", nullable = false)
-    private String latitude;
+    private Double latitude;
 
     @Column(name = "battery", nullable = false)
     private Integer battery;

@@ -16,5 +16,5 @@ import java.sql.Timestamp;
  * @author hongdatchy
  */
 public interface PathService {
-    Path updatePathFormGPS(Contract contract, int bikeId, String latitude, String longitude) throws JsonProcessingException;
+    Path updatePathFormGPS(Contract contract, int bikeId, double latitude, double longitude) throws JsonProcessingException;
 }

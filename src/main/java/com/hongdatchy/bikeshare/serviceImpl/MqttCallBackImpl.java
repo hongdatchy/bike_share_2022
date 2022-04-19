@@ -58,20 +58,32 @@ public class MqttCallBackImpl implements MqttCallback {
             int bikeId = Integer.parseInt(topicSplit[topicSplit.length-1]);
             List<Contract> contracts = contractRepoJpa.findByBikeId(bikeId);
             if(mess[0].equals("p")) {
-                if(contracts.size() > 0){
-                    // update time end to contract
-                    Contract contract = contracts.get(contracts.size()-1);
-                    String timeGtm0 = mess[1];
-                    SimpleDateFormat f = new SimpleDateFormat("ddMMyyyyHHmmss");
-                    f.setTimeZone(TimeZone.getTimeZone("GMT+0"));
-                    // vì mqtt đang gửi lên gmt+0
-                    Date date = f.parse(new SimpleDateFormat("ddMMyyyy").format(new Date())+ timeGtm0);
-                    contract.setEndTime(new Timestamp(date.getTime()));
-                    contractRepoJpa.save(contract);
+                List<Device> devices = deviceRepoJpa.findByBikeId(bikeId);
+                double latitude = Double.parseDouble(mess[2]);
+                double longitude = Double.parseDouble(mess[3]);
 
-                    // update path
-                    pathService.updatePathFormGPS(contract, bikeId, mess[2], mess[3]);
+                if(devices.get(0).getStatusLock()){ // true --> xa đang được thuê
+                    if(contracts.size() > 0){
+                        // update time end to contract
+                        Contract contract = contracts.get(contracts.size()-1);
+                        String timeGtm0 = mess[1];
+                        SimpleDateFormat f = new SimpleDateFormat("ddMMyyyyHHmmss");
+                        f.setTimeZone(TimeZone.getTimeZone("GMT+0"));
+                        // vì mqtt đang gửi lên gmt+0
+                        Date date = f.parse(new SimpleDateFormat("ddMMyyyy").format(new Date())+ timeGtm0);
+                        contract.setEndTime(new Timestamp(date.getTime()));
+                        contractRepoJpa.save(contract);
+
+                        // update path
+                        pathService.updatePathFormGPS(contract, bikeId, latitude, longitude);
+                    }
                 }
+                // luôn cập nhật cho device
+                devices.get(0).setLatitude(latitude);
+                devices.get(0).setLongitude(longitude);
+                deviceRepoJpa.save(devices.get(0));
+
+
             } else if (mess[0].equals("cl")) {
                 List<Device> devices = deviceRepoJpa.findByBikeId(bikeId);
                 if(devices.size() == 1){
