@@ -34,8 +34,8 @@ public class MqttCallBackImpl implements MqttCallback {
     DeviceRepoJpa deviceRepoJpa;
 
     public void connectionLost(Throwable cause) {
-        // After the connection is lost, it usually reconnects here
-        System.out.println("disconnect，you can reconnect");
+
+        System.out.println("disconnect");
     }
 
     /**

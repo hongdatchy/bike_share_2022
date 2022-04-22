@@ -6,4 +6,6 @@ import com.hongdatchy.bikeshare.entities.request.LoginForm;
 public interface AdminService {
 
     Admin login(LoginForm loginForm);
+
+
 }

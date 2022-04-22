@@ -19,7 +19,7 @@ public class RegisterForm {
     private Date birthday;
     private String gender;
     private String address;
-    private String district;
-    private String city;
-
+    private Integer districtId;
+    private Integer cityId;
+    private Integer wardId;
 }
