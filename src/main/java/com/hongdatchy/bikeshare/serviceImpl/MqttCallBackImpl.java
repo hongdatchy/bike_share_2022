@@ -11,6 +11,7 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
@@ -33,6 +34,9 @@ public class MqttCallBackImpl implements MqttCallback {
     @Autowired
     DeviceRepoJpa deviceRepoJpa;
 
+    @Autowired
+    private SimpMessagingTemplate template;
+
     public void connectionLost(Throwable cause) {
 
         System.out.println("disconnect");
@@ -53,9 +57,10 @@ public class MqttCallBackImpl implements MqttCallback {
 
         String[] mess = new String(message.getPayload()).split(",");
         System.out.println(Arrays.toString(mess));
+        String[] topicSplit = topic.split("/");
+        int bikeId = Integer.parseInt(topicSplit[topicSplit.length-1]);
         try {
-            String[] topicSplit = topic.split("/");
-            int bikeId = Integer.parseInt(topicSplit[topicSplit.length-1]);
+
             List<Contract> contracts = contractRepoJpa.findByBikeId(bikeId);
             if(mess[0].equals("p")) {
                 List<Device> devices = deviceRepoJpa.findByBikeId(bikeId);
@@ -90,6 +95,9 @@ public class MqttCallBackImpl implements MqttCallback {
                     devices.get(0).setStatusLock(false);
                     deviceRepoJpa.save(devices.get(0));
                 }
+
+                // thông báo cho android hãy đóng khoá
+                template.convertAndSend("/topic/greetings/" + bikeId, "cl");
             }
         } catch (ParseException | JsonProcessingException e){
             e.printStackTrace();

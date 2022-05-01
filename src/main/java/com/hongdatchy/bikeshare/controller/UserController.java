@@ -13,6 +13,7 @@ import com.hongdatchy.bikeshare.repo.UserRepoJpa;
 import com.hongdatchy.bikeshare.service.MqttService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -37,6 +38,9 @@ public class UserController {
     @Autowired
     DeviceRepoJpa deviceRepoJpa;
 
+    @Autowired
+    private SimpMessagingTemplate template;
+
     @PostMapping("api/us/rent-bike")
     ResponseEntity<Object> rendBike(@RequestBody RentBikeRequest rentBikeRequest, @RequestAttribute Integer userId){
         // kiểm tra xem status device có đang đóng hay không
@@ -53,7 +57,10 @@ public class UserController {
                     .build());
 
             // đẩy bản tin mqtt thông báo cho thiết bị là hãy mở khoá
-            mqttService.publish(rentBikeRequest.getBikeId(), "o");
+            mqttService.publish(rentBikeRequest.getBikeId(), "op");
+
+            // thông báo cho android là đã mở khoá
+            template.convertAndSend("/topic/greetings/" + rentBikeRequest.getBikeId(), "op");
 
             // thay đổi status của device
             devices.get(0).setStatusLock(true);

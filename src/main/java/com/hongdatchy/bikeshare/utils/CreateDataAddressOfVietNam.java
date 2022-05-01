@@ -23,7 +23,12 @@ import java.io.InputStream;
 import java.util.*;
 
 /**
+ *  class để tạo dữ liệu 3 table country, district, ward trong database
+ *  tư file excel (format file xem trong file TinhHuyenXa.xlsx trong project)
  *
+ *  Note: chỉ dùng khi cần update lại 3 bảng này
+ *
+ *  cách dùng: autowire class và gọi hàm này
  *
  * @author hongdatchy
  */
@@ -39,6 +44,12 @@ public class CreateDataAddressOfVietNam {
     @Autowired
     WardRepoJpa wardRepoJpa;
 
+    /**
+     * hàm đọc file và lưu vào database
+     *
+     * @param excelFilePath đường dẫn đến file excel
+     * @throws IOException
+     */
     public void readExcel(String excelFilePath) throws IOException {
 
         Set<City> cities = new TreeSet<>();
@@ -171,10 +182,6 @@ public class CreateDataAddressOfVietNam {
                 break;
             case STRING:
                 cellValue = cell.getStringCellValue();
-                break;
-            case _NONE:
-            case BLANK:
-            case ERROR:
                 break;
             default:
                 break;

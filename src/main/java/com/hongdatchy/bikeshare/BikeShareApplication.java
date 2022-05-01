@@ -7,19 +7,18 @@ package com.hongdatchy.bikeshare;
 
 import com.hongdatchy.bikeshare.service.MqttService;
 import com.hongdatchy.bikeshare.service.SendEmailService;
-import com.hongdatchy.bikeshare.utils.CreateDataAddressOfVietNam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.io.IOException;
 import java.util.TimeZone;
 
 @SpringBootApplication
@@ -44,16 +43,19 @@ public class BikeShareApplication implements CommandLineRunner {
     @Autowired
     SendEmailService sendEmailService;
 
+    @Autowired
+    private SimpMessagingTemplate template;
+
+
     @Override
-    public void run(String... args) throws IOException {
+    public void run(String... args) throws InterruptedException {
 //        set timezone cho backend
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
 //        set timezone cho controller
         objectMapper.setTimeZone(TimeZone.getDefault());
 
         mqttService.subscribeAll();
-
-
+        
     }
 
 }
