@@ -67,7 +67,7 @@ public class MqttCallBackImpl implements MqttCallback {
                 double latitude = Double.parseDouble(mess[2]);
                 double longitude = Double.parseDouble(mess[3]);
 
-                if(devices.get(0).getStatusLock()){ // true --> xa đang được thuê
+                if(devices.get(0).getStatusLock()){ // true --> xe đang được thuê
                     if(contracts.size() > 0){
                         // update time end to contract
                         Contract contract = contracts.get(contracts.size()-1);
