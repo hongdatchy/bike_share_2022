@@ -12,6 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -42,16 +43,23 @@ public class BikeShareApplication implements CommandLineRunner {
     @Autowired
     SendEmailService sendEmailService;
 
-
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @Override
-    public void run(String... args) {
+    public void run(String... args) throws InterruptedException {
 //        set timezone cho backend
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+7"));
 //        set timezone cho controller
         objectMapper.setTimeZone(TimeZone.getDefault());
 //        server subscriber to mqtt broker
         mqttService.subscribeAll();
+
+        // test
+//        while(true){
+//            template.convertAndSend("/topic/greetings", "hi");
+//            Thread.sleep(5000);
+//        }
 
     }
 
